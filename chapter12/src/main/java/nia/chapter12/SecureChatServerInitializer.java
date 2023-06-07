@@ -26,6 +26,6 @@ public class SecureChatServerInitializer extends ChatServerInitializer {
         super.initChannel(ch);
         SSLEngine engine = context.newEngine(ch.alloc());
         engine.setUseClientMode(false);
-        ch.pipeline().addFirst(new SslHandler(engine));
+        ch.pipeline().addFirst(new SslHandler(engine)); //将 SslHandler 添加到ChannelPipeline 中
     }
 }

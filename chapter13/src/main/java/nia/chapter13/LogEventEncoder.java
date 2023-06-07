@@ -28,9 +28,9 @@ public class LogEventEncoder extends MessageToMessageEncoder<LogEvent> {
         byte[] msg = logEvent.getMsg().getBytes(CharsetUtil.UTF_8);
         ByteBuf buf = channelHandlerContext.alloc()
             .buffer(file.length + msg.length + 1);
-        buf.writeBytes(file);
-        buf.writeByte(LogEvent.SEPARATOR);
-        buf.writeBytes(msg);
-        out.add(new DatagramPacket(buf, remoteAddress));
+        buf.writeBytes(file); // 将文件名写入到 ByteBuf 中
+        buf.writeByte(LogEvent.SEPARATOR); // 添加一个SEPARATOR
+        buf.writeBytes(msg); // 将日志消息写入ByteBuf 中
+        out.add(new DatagramPacket(buf, remoteAddress)); // 将一个拥有数据和目的地地址的新 DatagramPacket添加到出站的消息列表中
     }
 }

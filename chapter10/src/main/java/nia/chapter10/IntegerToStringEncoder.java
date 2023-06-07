@@ -15,6 +15,7 @@ public class IntegerToStringEncoder
     @Override
     public void encode(ChannelHandlerContext ctx, Integer msg,
         List<Object> out) throws Exception {
+        // 将 Integer 转换为 String，并将其添加到 List 中
         out.add(String.valueOf(msg));
     }
 }

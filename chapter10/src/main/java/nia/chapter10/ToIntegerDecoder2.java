@@ -11,11 +11,12 @@ import java.util.List;
  *
  * @author <a href="mailto:norman.maurer@gmail.com">Norman Maurer</a>
  */
-public class ToIntegerDecoder2 extends ReplayingDecoder<Void> {
+public class ToIntegerDecoder2 extends ReplayingDecoder<Void> { //其中 Void 代表不需要状态管理
 
     @Override
     public void decode(ChannelHandlerContext ctx, ByteBuf in,
         List<Object> out) throws Exception {
+
         out.add(in.readInt());
     }
 }

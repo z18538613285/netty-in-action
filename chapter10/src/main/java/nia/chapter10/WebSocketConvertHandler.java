@@ -17,9 +17,18 @@ import java.util.List;
 public class WebSocketConvertHandler extends
      MessageToMessageCodec<WebSocketFrame,
      WebSocketConvertHandler.MyWebSocketFrame> {
+
+    /**
+     *  MyWebSocketFrame 编码为指定的 WebSocketFrame子类型
+     * @param ctx
+     * @param msg
+     * @param out
+     * @throws Exception
+     */
      @Override
      protected void encode(ChannelHandlerContext ctx,
          WebSocketConvertHandler.MyWebSocketFrame msg,
+
          List<Object> out) throws Exception {
          ByteBuf payload = msg.getData().duplicate().retain();
          switch (msg.getType()) {
@@ -46,6 +55,14 @@ public class WebSocketConvertHandler extends
                      "Unsupported websocket msg " + msg);}
     }
 
+    /**
+     * 将 WebSocketFrame 解码为MyWebSocketFrame，并设置 FrameType
+     *
+     * @param ctx
+     * @param msg
+     * @param out
+     * @throws Exception
+     */
     @Override
     protected void decode(ChannelHandlerContext ctx, WebSocketFrame msg,
         List<Object> out) throws Exception {

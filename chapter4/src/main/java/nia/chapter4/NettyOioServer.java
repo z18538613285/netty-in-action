@@ -23,30 +23,33 @@ public class NettyOioServer {
                 Unpooled.unreleasableBuffer(Unpooled.copiedBuffer("Hi!\r\n", Charset.forName("UTF-8")));
         EventLoopGroup group = new OioEventLoopGroup();
         try {
+            // 创建 ServerBootstrap
             ServerBootstrap b = new ServerBootstrap();
             b.group(group)
-                    .channel(OioServerSocketChannel.class)
+                    .channel(OioServerSocketChannel.class) // 使用 OioEventLoopGroup以允许阻塞模式（旧的I/O）
                     .localAddress(new InetSocketAddress(port))
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                    .childHandler(new ChannelInitializer<SocketChannel>() { // 指定 ChannelInitializer，对于每个已接受的连接都调用它
                         @Override
                         public void initChannel(SocketChannel ch)
                                 throws Exception {
                                 ch.pipeline().addLast(
-                                    new ChannelInboundHandlerAdapter() {
+                                    new ChannelInboundHandlerAdapter() {  // 添加一个 ChannelInboundHandlerAdapter 以拦截和处理事件
                                         @Override
                                         public void channelActive(
                                                 ChannelHandlerContext ctx)
                                                 throws Exception {
                                             ctx.writeAndFlush(buf.duplicate())
                                                     .addListener(
-                                                            ChannelFutureListener.CLOSE);
+                                                            ChannelFutureListener.CLOSE); // 将消息写到客户端，并添加 ChannelFutureListener，以便消息一被写完就关闭连接
                                         }
                                     });
                         }
                     });
+            // 绑定服务器接收连接
             ChannelFuture f = b.bind().sync();
             f.channel().closeFuture().sync();
         } finally {
+            // 释放所有的资源
             group.shutdownGracefully().sync();
         }
     }

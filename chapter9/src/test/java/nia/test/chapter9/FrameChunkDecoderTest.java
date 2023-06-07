@@ -28,9 +28,12 @@ public class FrameChunkDecoderTest {
         EmbeddedChannel channel = new EmbeddedChannel(
             new FrameChunkDecoder(3));
 
+        // 向它写入 2 字节，并断言它们将会产生一个新帧
         assertTrue(channel.writeInbound(input.readBytes(2)));
         try {
+            // 写入一个 4 字节大小的帧，并捕获预期的TooLongFrameException
             channel.writeInbound(input.readBytes(4));
+            // 如果上面没有抛出异常，那么就会到达这个断言，并且测试失败
             Assert.fail();
         } catch (TooLongFrameException e) {
             // expected exception
@@ -39,6 +42,7 @@ public class FrameChunkDecoderTest {
         assertTrue(channel.finish());
 
         // Read frames
+        // 读取产生的消息，并且验证值
         ByteBuf read = (ByteBuf) channel.readInbound();
         assertEquals(buf.readSlice(2), read);
         read.release();

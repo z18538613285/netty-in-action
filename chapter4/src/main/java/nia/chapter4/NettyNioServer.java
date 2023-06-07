@@ -14,7 +14,16 @@ import java.nio.charset.Charset;
 /**
  * Listing 4.4 Asynchronous networking with Netty
  *
+ * ChannelHandler 的典型用途包括：
+ *  将数据从一种格式转换为另一种格式；
+ *  提供异常的通知；
+ *  提供 Channel 变为活动的或者非活动的通知；
+ *  提供当 Channel 注册到 EventLoop 或者从 EventLoop 注销时的通知；
+ *  提供有关用户自定义事件的通知。
+ *
  * @author <a href="mailto:norman.maurer@gmail.com">Norman Maurer</a>
+ *
+ *
  */
 public class NettyNioServer {
     public void server(int port) throws Exception {

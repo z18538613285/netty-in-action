@@ -21,10 +21,10 @@ public class ProtoBufInitializer extends ChannelInitializer<Channel> {
     @Override
     protected void initChannel(Channel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
-        pipeline.addLast(new ProtobufVarint32FrameDecoder());
-        pipeline.addLast(new ProtobufEncoder());
-        pipeline.addLast(new ProtobufDecoder(lite));
-        pipeline.addLast(new ObjectHandler());
+        pipeline.addLast(new ProtobufVarint32FrameDecoder()); //添加 ProtobufVarint32FrameDecoder以分隔帧
+        pipeline.addLast(new ProtobufEncoder()); //添加 ProtobufEncoder以处理消息的编码
+        pipeline.addLast(new ProtobufDecoder(lite)); // 添加 ProtobufDecoder以解码消息
+        pipeline.addLast(new ObjectHandler()); // 添加 ObjectHandler 以处理解码消息
     }
 
     public static final class ObjectHandler
